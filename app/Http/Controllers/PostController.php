@@ -15,7 +15,7 @@ class PostController extends Controller
   * @return \Illuminate\Http\Response
   */
   public function index(){
-    $posts=Post::latest()->offset(0)->limit(5)->get();
+    $posts=Post::offset(0)->limit(5)->latest()->get();
     return view('layout.home', compact('posts'));
   }
 
@@ -73,7 +73,9 @@ class PostController extends Controller
   */
   public function edit($id)
   {
-    //
+    $post=Post::findOrFail($id);
+    $categories=Category::all();
+    return view('layout.update-post',compact('post', 'categories'));
   }
 
   /**
@@ -83,9 +85,16 @@ class PostController extends Controller
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function update(Request $request, $id)
+  public function update(PostRequest $request, $id)
   {
-    //
+    $validateData = $request->validated();
+    $selectedCategories = $request->input('categories');
+    $post=Post::findOrFail($id);
+    $post->update($validateData);
+
+    $categories = Category::find($selectedCategories);
+    $post->categories()->sync($categories);
+    return redirect('posts');
   }
 
   /**
