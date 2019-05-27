@@ -13,5 +13,6 @@
 
 Route::get('/', 'PostController@index');
 Route::get('/category/{category_name}', 'PostController@getPostByCategory');
-Route::get('/post/{id}', 'PostController@getPostById');
+Route::get('/post/{id}', 'PostController@show');
+Route::get('/admin/post/new', 'PostController@create');
 Route::resource('posts','PostController');

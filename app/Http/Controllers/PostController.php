@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Category;
+use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
@@ -13,7 +15,7 @@ class PostController extends Controller
   * @return \Illuminate\Http\Response
   */
   public function index(){
-    $posts=Post::offset(0)->limit(5)->get();
+    $posts=Post::latest()->offset(0)->limit(5)->get();
     return view('layout.home', compact('posts'));
   }
 
@@ -24,7 +26,8 @@ class PostController extends Controller
   */
   public function create()
   {
-    //
+    $categories=Category::all();
+    return view('layout.create-post',compact('categories'));
   }
 
   /**
@@ -33,9 +36,15 @@ class PostController extends Controller
   * @param  \Illuminate\Http\Request  $request
   * @return \Illuminate\Http\Response
   */
-  public function store(Request $request)
+  public function store(PostRequest $request)
   {
-    //
+    $validateData = $request->validated();
+    $selectedCategories = $request->input('categories');
+    $post= Post::create($validateData);
+
+    $categories = Category::find($selectedCategories);
+    $post->categories()->attach($categories);
+    return redirect('posts');
   }
 
   /**
@@ -46,7 +55,14 @@ class PostController extends Controller
   */
   public function show($id)
   {
-    //
+    $relatedPosts=[];
+    $posts=Post::all();
+    foreach ($posts as $post) {
+      if ($post->id==$id) {
+        $relatedPosts[]=$post;
+      }
+    }
+    return view('layout.search', compact('relatedPosts'));
   }
 
   /**
@@ -91,17 +107,6 @@ class PostController extends Controller
         if ($relatedCategory->category_name==ucfirst($category_name)) {
           $relatedPosts[]=$post;
         }
-      }
-    }
-    return view('layout.search', compact('relatedPosts'));
-  }
-
-  public function getPostById($id){
-    $relatedPosts=[];
-    $posts=Post::all();
-    foreach ($posts as $post) {
-      if ($post->id==$id) {
-        $relatedPosts[]=$post;
       }
     }
     return view('layout.search', compact('relatedPosts'));
