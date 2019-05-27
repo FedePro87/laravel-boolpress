@@ -13,4 +13,5 @@
 
 Route::get('/', 'PostController@index');
 Route::get('/category/{category_name}', 'PostController@getPostByCategory');
+Route::get('/post/{id}', 'PostController@getPostById');
 Route::resource('posts','PostController');
