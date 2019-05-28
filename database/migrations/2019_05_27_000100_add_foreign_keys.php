@@ -22,6 +22,12 @@ class AddForeignKeys extends Migration
                 ->references('id')
                 ->on('posts');
         });
+
+        Schema::table('posts',function(Blueprint $table){
+          $table->foreign('author_id','author')
+                ->references('id')
+                ->on('authors');
+        });
     }
 
     /**
@@ -32,8 +38,12 @@ class AddForeignKeys extends Migration
     public function down()
     {
       Schema::table('category_post',function(Blueprint $table){
-        $table->dropForeign('category');
-        $table->dropForeign('post');
+        $table->dropForeign('category_id');
+        $table->dropForeign('post_id');
+      });
+
+      Schema::table('posts',function(Blueprint $table){
+        $table->dropForeign('author');
       });
     }
 }

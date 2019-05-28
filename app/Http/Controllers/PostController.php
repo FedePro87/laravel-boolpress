@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
+use App\Author;
 use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
@@ -27,7 +28,8 @@ class PostController extends Controller
   public function create()
   {
     $categories=Category::all();
-    return view('layout.create-post',compact('categories'));
+    $authors=Author::all();
+    return view('layout.create-post',compact('categories','authors'));
   }
 
   /**
@@ -39,11 +41,20 @@ class PostController extends Controller
   public function store(PostRequest $request)
   {
     $validateData = $request->validated();
-    $selectedCategories = $request->input('categories');
-    $post= Post::create($validateData);
+    $post=Post::make($validateData);
 
+    $inputAuthor=$request->input('author');
+    $author= Author::find($inputAuthor);
+    $post->author()->associate($author);
+    $post->save();
+
+    $selectedCategories = $request->input('categories');
     $categories = Category::find($selectedCategories);
-    $post->categories()->attach($categories);
+
+    foreach ($categories as $category) {
+      $post->categories()->attach($category);
+    }
+
     return redirect('posts');
   }
 
@@ -55,14 +66,14 @@ class PostController extends Controller
   */
   public function show($id)
   {
-    $relatedPosts=[];
+    $results=[];
     $posts=Post::all();
     foreach ($posts as $post) {
       if ($post->id==$id) {
-        $relatedPosts[]=$post;
+        $results[]=$post;
       }
     }
-    return view('layout.search', compact('relatedPosts'));
+    return view('layout.search', compact('results'));
   }
 
   /**
@@ -75,7 +86,8 @@ class PostController extends Controller
   {
     $post=Post::findOrFail($id);
     $categories=Category::all();
-    return view('layout.update-post',compact('post', 'categories'));
+    $author=$post->author;
+    return view('layout.update-post',compact('post', 'categories','author'));
   }
 
   /**
@@ -108,33 +120,33 @@ class PostController extends Controller
     //
   }
   public function getPostByCategory($category_name){
-    $relatedPosts=[];
+    $results=[];
     $posts=Post::all();
     foreach ($posts as $post) {
       $relatedCategories= $post->categories;
       foreach ($relatedCategories as $relatedCategory) {
         if ($relatedCategory->category_name==ucfirst($category_name)) {
-          $relatedPosts[]=$post;
+          $results[]=$post;
         }
       }
     }
-    return view('layout.search', compact('relatedPosts'));
+    return view('layout.search', compact('results'));
   }
 
   private function getSearchingParams($author, $title, $content, $category)
   {
     $searchingParams=-1;
 
-    if ($_GET['author']!="" & $_GET['title']!="" & $_GET['content']!="") {
-      $searchingParams=[['author', 'LIKE', "%$author%"],['title', 'LIKE', "%$title%"],['content', 'LIKE', "%$content%"]];
-    } elseif ($_GET['author']!="" & $_GET['title']!="") {
-      $searchingParams=[['author', 'LIKE', "%$author%"],['title', 'LIKE', "%$title%"]];
-    } elseif ($_GET['author']!="" & $_GET['content']!="") {
-      $searchingParams=[['author', 'LIKE', "%$author%"],['content', 'LIKE', "%$content%"]];
+    if ($_GET['author_id']!="" & $_GET['title']!="" & $_GET['content']!="") {
+      $searchingParams=[['author_id', '=', "$author"],['title', 'LIKE', "%$title%"],['content', 'LIKE', "%$content%"]];
+    } elseif ($_GET['author_id']!="" & $_GET['title']!="") {
+      $searchingParams=[['author_id', '=', "$author"],['title', 'LIKE', "%$title%"]];
+    } elseif ($_GET['author_id']!="" & $_GET['content']!="") {
+      $searchingParams=[['author_id', '=', "$author"],['content', 'LIKE', "%$content%"]];
     } elseif ($_GET['title']!="" & $_GET['content']!="") {
       $searchingParams=[['title', 'LIKE', "%$title%"],['content', 'LIKE', "%$content%"]];
-    } elseif ($_GET['author']!="") {
-      $searchingParams=[['author', 'LIKE', "%$author%"]];
+    } elseif ($_GET['author_id']!="") {
+      $searchingParams=[['author_id', '=', "$author"]];
     } elseif ($_GET['title']!="") {
       $searchingParams=[['title', 'LIKE', "%$title%"]];
     } elseif ($_GET['content']!="") {
@@ -167,17 +179,20 @@ class PostController extends Controller
   public function showAdvancedSearchResults()
   {
     $categories=Category::all();
+    $authors=Author::all();
 
-    if (isset($_GET['author']) & isset($_GET['title']) & isset($_GET['content']) & isset($_GET['category'])) {
-      $author=$_GET['author'];
+    if (isset($_GET['author_id']) & isset($_GET['title']) & isset($_GET['content']) & isset($_GET['category_id'])) {
+      $searchedAuthor=$_GET['author_id'];
       $title=$_GET['title'];
       $content=$_GET['content'];
-      $searchedCategory=$_GET['category'];
-      $results=$this->search($author, $title, $content, $searchedCategory);
-      $searching=true;
+      $searchedCategory=$_GET['category_id'];
+      $results=$this->search($searchedAuthor, $title, $content, $searchedCategory);
+
+      return view('layout.advancedSearch',compact('results','categories','authors','searchedAuthor','title','content','searchedCategory'));
+    } else {
+      return view('layout.advancedSearch',compact('categories','authors'));
     }
 
-    return view('layout.advancedSearch',compact('results','categories','author','title','content','searchedCategory'));
   }
 
 }

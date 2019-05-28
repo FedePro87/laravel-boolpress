@@ -17,5 +17,4 @@ Route::get('/post/{id}', 'PostController@show');
 Route::get('/admin/post/new', 'PostController@create');
 Route::get('/admin/post/edit/{id}', 'PostController@edit');
 Route::get('/search', 'PostController@showAdvancedSearchResults')->name('showAdvancedSearchResults');
-// Route::get('/search/show', 'PostController@showAdvancedSearchResults');
 Route::resource('posts','PostController');

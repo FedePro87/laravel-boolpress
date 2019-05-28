@@ -7,7 +7,7 @@
       @method('PATCH')
       <div>
         <label for="author">Autore</label>
-        <input type="text" name="author" value="{{$post->author}}">
+        <input type="text" name="author" readonly="readonly" value="{{$author->author_name}}">
       </div>
       <div>
         <label for="title">Titolo</label>

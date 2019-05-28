@@ -11,7 +11,7 @@
       </tr>
       @foreach ($posts as $post)
         <tr>
-          <td>{{$post->author}}</td>
+          <td>{{$post->author->author_name}}</td>
           <td>{{$post->title}}</td>
           <td>
             @foreach ($post->categories as $category)

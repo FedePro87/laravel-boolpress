@@ -6,7 +6,11 @@
       @csrf
       <div>
         <label for="author">Autore</label>
-        <input type="text" name="author" value="">
+        <select name="author">
+          @foreach ($authors as $author)
+            <option value="{{$author->id}}">{{$author->author_name}}</option>
+          @endforeach
+        </select>
       </div>
       <div>
         <label for="title">Titolo</label>
