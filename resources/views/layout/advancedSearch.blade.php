@@ -30,7 +30,26 @@
       @if (empty($results))
         <h1>Non ci sono risultati!</h1>
       @else
-        <h1>Ci sono risultati!!!!</h1>
+        <table border="1">
+          <tr>
+            <th>Autore</th>
+            <th>Titolo</th>
+            <th>Categorie</th>
+            <th>Contenuto</th>
+          </tr>
+          @foreach ($results as $result)
+            <tr>
+              <td>{{$result->author}}</td>
+              <td>{{$result->title}}</td>
+              <td>
+                @foreach ($result->categories as $category)
+                  {{$category->category_name}}
+                @endforeach
+              </td>
+              <td>{!!$result->content!!}</td>
+            </tr>
+          @endforeach
+        </table>
       @endif
     @else
       <h1>Non hai cercato nulla!</h1>

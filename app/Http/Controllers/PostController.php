@@ -127,51 +127,79 @@ class PostController extends Controller
     return view('layout.advancedSearch',compact('categories'));
   }
 
-  private function searchAll($author, $title, $content, $category)
+  // private function searchAll($author, $title, $content, $category)
+  // {
+  //   $finalResults=[];
+  //
+  //   $results=Post::where([
+  //     ['author', '=', $author],
+  //     ['title', '=', $title],
+  //     ['content', '=', $content],
+  //     ])->get();
+  //
+  //   foreach ($results as $result) {
+  //     $allPostCategories= $result->categories;
+  //       foreach ($allPostCategories as $singlePostCategory) {
+  //         if ($singlePostCategory->id==$category) {
+  //           $finalResults[]=$results;
+  //         } else {
+  //           echo "Non ci sono risultati!";
+  //         }
+  //       }
+  //     }
+  //
+  //     return $finalResults;
+  //   }
+
+  private function getSearchingParams($author, $title, $content, $category)
+  {
+    $searchingParams=-1;
+
+    if ($_GET['author']!="" & $_GET['title']!="" & $_GET['content']!="") {
+      $searchingParams=[['author', '=', $author],['title', '=', $title],['content', '=', $content]];
+    } elseif ($_GET['author']!="" & $_GET['title']!="") {
+      $searchingParams=[['author', '=', $author],['title', '=', $title]];
+    } elseif ($_GET['author']!="" & $_GET['content']!="") {
+      $searchingParams=[['author', '=', $author],['content', '=', $content]];
+    } elseif ($_GET['title']!="" & $_GET['content']!="") {
+      $searchingParams=[['title', '=', $title],['content', '=', $content]];
+    } elseif ($_GET['author']!="") {
+      $searchingParams=[['author', '=', $author]];
+    } elseif ($_GET['title']!="") {
+      $searchingParams=[['title', '=', $title]];
+    } elseif ($_GET['content']!="") {
+      $searchingParams=[['content', '=', $content]];
+    } else {
+      $searchingParams=[['id','REGEXP','^[0-9]+$']];
+    }
+
+    return $searchingParams;
+  }
+
+  private function search($author, $title, $content, $category)
   {
     $finalResults=[];
 
-    $results=Post::where([
-      ['author', '=', $author],
-      ['title', '=', $title],
-      ['content', '=', $content],
-      ])->get();
+    $results=Post::where($this->getSearchingParams($author, $title, $content, $category))->get();
 
     foreach ($results as $result) {
       $allPostCategories= $result->categories;
-        foreach ($allPostCategories as $singlePostCategory) {
-          if ($singlePostCategory->id==$category) {
-            $finalResults[]=$results;
-          } else {
-            echo "Non ci sono risultati!";
-          }
+      foreach ($allPostCategories as $singlePostCategory) {
+        if ($singlePostCategory->id==$category) {
+          $finalResults[]=$result;
         }
       }
-
-      return $finalResults;
     }
 
-    public function showAdvancedSearchResults()
-    {
-      $categories=Category::all();
-
-      if ($_GET['author']!="" & $_GET['title']!="" & $_GET['content']!="") {
-        $results=$this->searchAll($_GET['author'], $_GET['title'], $_GET['content'], $_GET['category']);
-      } elseif ($_GET['author']!="" & $_GET['title']!="") {
-        $results=$this->searchAuthorTitle();
-      } elseif ($_GET['author']!="" & $_GET['content']!="") {
-        $results=$this->searchAuthorContent();
-      } elseif ($_GET['title']!="" & $_GET['content']!="") {
-        $results=$this->searchTitleContent();
-      } elseif ($_GET['author']!="") {
-        $results=$this->searchAuthor();
-      } elseif ($_GET['title']!="") {
-        $results=$this->searchTitle();
-      } elseif ($_GET['content']!="") {
-        $results=$this->searchContent();
-      }
-
-      return view('layout.advancedSearch',compact('results','categories'));
-    }
-
+    return $finalResults;
   }
+
+  public function showAdvancedSearchResults()
+  {
+    $categories=Category::all();
+    $results=$this->search($_GET['author'], $_GET['title'], $_GET['content'], $_GET['category']);
+
+    return view('layout.advancedSearch',compact('results','categories'));
+  }
+
+}
