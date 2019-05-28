@@ -1,7 +1,7 @@
 @extends('structure')
 
 @section('content')
-  <div class="read">
+  <div class="search">
     <table border="1">
       <tr>
         <th>Autore</th>
