@@ -49290,6 +49290,12 @@ var app = new Vue({
   el: '#app'
 });
 
+function init() {
+  $(".alert").fadeOut(5000);
+}
+
+$(document).ready(init);
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

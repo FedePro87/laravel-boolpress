@@ -26,15 +26,17 @@ class PostRequest extends FormRequest
         return [
           "author"=>"required",
           "title"=>"required",
-          "content"=>"required"
+          "content"=>"required",
+          "categories"=>"required"
         ];
     }
 
     public function messages() {
       return [
-        "author.required"=>"Il campo autore è necessario!",
-        "title.required"=>"Il campo titolo è necessario!",
-        "content.required"=>"Il testo è necessario!"
+        "author.required"=>"L'autore è necessario!",
+        "title.required"=>"Il titolo è necessario!",
+        "content.required"=>"Il testo è necessario!",
+        "categories.required"=>"Aggiungere almeno una categoria!"
       ];
     }
 }
