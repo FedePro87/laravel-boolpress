@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
 use App\Author;
+use DB;
 use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
@@ -118,7 +119,11 @@ class PostController extends Controller
   */
   public function destroy($id)
   {
-    //
+    $postToDelete= Post::findOrFail($id);
+    DB::table('category_post')->where('post_id','=',$id)->delete();
+    $postToDelete->delete();
+
+    return redirect(route('home'));
   }
   public function getPostByCategory($category_name){
     $results=[];
@@ -163,17 +168,18 @@ class PostController extends Controller
     return $searchingParams;
   }
 
-  private function search($author, $title, $content, $category)
+  private function search($author, $title, $content, $category_id)
   {
     $finalResults=[];
 
-    $results=Post::where($this->getSearchingParams($author, $title, $content, $category))->get();
+    $results=Post::where($this->getSearchingParams($author, $title, $content, $category_id))->get();
 
     foreach ($results as $result) {
       $allPostCategories= $result->categories;
       foreach ($allPostCategories as $singlePostCategory) {
-        if ($singlePostCategory->id==$category) {
+        if ($singlePostCategory->id==$category_id) {
           $finalResults[]=$result;
+          break;
         }
       }
     }

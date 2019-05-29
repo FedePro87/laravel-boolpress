@@ -10,6 +10,7 @@
         <th>Categorie</th>
         <th>Contenuto</th>
         <th>Modifica</th>
+        <th>Elimina</th>
       </tr>
       @foreach ($posts as $post)
         <tr>
@@ -33,6 +34,11 @@
           <td>
             <a href="{{route('adminPostEdit',$post->id)}}">
               <i class="fas fa-edit"></i>
+            </a>
+          </td>
+          <td>
+            <a href="{{route('adminPostDelete',$post->id)}}">
+              <i class="fas fa-trash"></i>
             </a>
           </td>
         </tr>
