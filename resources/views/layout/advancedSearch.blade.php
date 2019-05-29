@@ -50,7 +50,7 @@
                 @include('layout.showSearchResults')
               @endif
             @else
-              <h1>Non hai cercato nulla!</h1>
+              <h1>Immetti dei parametri di ricerca...</h1>
             @endif
           </div>
         @stop

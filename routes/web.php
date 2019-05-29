@@ -11,10 +11,10 @@
 |
 */
 
-Route::get('/', 'PostController@index');
-Route::get('/category/{category_name}', 'PostController@getPostByCategory');
-Route::get('/post/{id}', 'PostController@show');
-Route::get('/admin/post/new', 'PostController@create');
-Route::get('/admin/post/edit/{id}', 'PostController@edit');
+Route::get('/', 'PostController@index')->name('home');
+Route::get('/category/{category_name}', 'PostController@getPostByCategory')->name('getPostByCategory');
+Route::get('/post/{id}', 'PostController@show')->name('postShow');
+Route::get('/admin/post/new', 'PostController@create')->name('adminPostCreate');
+Route::get('/admin/post/edit/{id}', 'PostController@edit')->name('adminPostEdit');
 Route::get('/search', 'PostController@showAdvancedSearchResults')->name('showAdvancedSearchResults');
 Route::resource('posts','PostController');

@@ -71,6 +71,7 @@ class PostController extends Controller
     foreach ($posts as $post) {
       if ($post->id==$id) {
         $results[]=$post;
+        break;
       }
     }
     return view('layout.search', compact('results'));
@@ -122,14 +123,18 @@ class PostController extends Controller
   public function getPostByCategory($category_name){
     $results=[];
     $posts=Post::all();
+    $category=Category::where('category_name','=',$category_name)->first();
+
     foreach ($posts as $post) {
-      $relatedCategories= $post->categories;
-      foreach ($relatedCategories as $relatedCategory) {
-        if ($relatedCategory->category_name==ucfirst($category_name)) {
+      $postCategories= $post->categories;
+      foreach ($postCategories as $postCategory) {
+        if ($category->category_name==$postCategory->category_name) {
           $results[]=$post;
+          break;
         }
       }
     }
+
     return view('layout.search', compact('results'));
   }
 
