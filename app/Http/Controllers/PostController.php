@@ -49,14 +49,16 @@ class PostController extends Controller
     $post->author()->associate($author);
     $post->save();
 
-    $selectedCategories = $request->input('categories');
-    $categories = Category::find($selectedCategories);
+    if ($request->input('categories')!==null) {
+      $selectedCategories = $request->input('categories');
+      $categories = Category::find($selectedCategories);
 
-    foreach ($categories as $category) {
-      $post->categories()->attach($category);
+      foreach ($categories as $category) {
+        $post->categories()->attach($category);
+      }
     }
 
-    return redirect('posts');
+    return redirect(route('home'))->with('success',"Il post è stato pubblicato!");
   }
 
   /**
@@ -108,7 +110,7 @@ class PostController extends Controller
 
     $categories = Category::find($selectedCategories);
     $post->categories()->sync($categories);
-    return redirect('posts');
+    return redirect(route('home'))->with('success',"Il post è stato modificato!");
   }
 
   /**
@@ -123,7 +125,7 @@ class PostController extends Controller
     DB::table('category_post')->where('post_id','=',$id)->delete();
     $postToDelete->delete();
 
-    return redirect(route('home'));
+    return redirect(route('home'))->with('success',"Il post è stato eliminato!");
   }
   public function getPostByCategory($category_name){
     $results=[];

@@ -11,6 +11,13 @@
 <body>
   <div class="wrapper">
     @include('layout.header')
+
+    @if (session('success'))
+    <div class="alert alert-success">
+      <h1>{{session('success')}}</h1>
+    </div>
+    @endif
+
     @if ($errors->any())
       <div class="alert alert-danger">
         <ul>
@@ -20,6 +27,7 @@
         </ul>
       </div>
     @endif
+
     @yield('content')
     @include('layout.footer')
   </div>
