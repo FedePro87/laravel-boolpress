@@ -47,4 +47,5 @@
   </div>
   <a href="{{route('adminPostCreate')}}">Crea un nuovo post!</a><br>
   <a href="{{route('showAdvancedSearchResults')}}">Ricerca avanzata post</a>
+  <div id="app"></div>
 @stop
