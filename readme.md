@@ -1,6 +1,4 @@
-[Disclaimer](#disclaimer)<br>
-
-# Boolflix
+# Boolpress
 Boolpress è un progetto creato in Laravel che strizza l'occhio a un blog vero e proprio.
 
 ### Caratteristiche
