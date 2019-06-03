@@ -47,8 +47,8 @@ class PostController extends Controller
     $post=Post::make($validateData);
 
     $inputAuthor= Auth::user()->name;
-    $author= User::where('name','=',$inputAuthor)->first();
-    $post->author()->associate($author);
+    $user= User::where('name','=',$inputAuthor)->first();
+    $post->user()->associate($user);
     $post->save();
 
     if ($request->input('categories')!==null) {
@@ -92,8 +92,7 @@ class PostController extends Controller
   {
     $post=Post::findOrFail($id);
     $categories=Category::all();
-    $author=$post->author;
-    return view('layout.update-post',compact('post', 'categories','author'));
+    return view('layout.update-post',compact('post', 'categories'));
   }
 
   /**

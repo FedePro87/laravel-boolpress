@@ -24,9 +24,9 @@ class AddForeignKeys extends Migration
         });
 
         Schema::table('posts',function(Blueprint $table){
-          $table->foreign('author_id','author')
+          $table->foreign('user_id','user')
                 ->references('id')
-                ->on('authors');
+                ->on('users');
         });
     }
 
@@ -43,7 +43,7 @@ class AddForeignKeys extends Migration
       });
 
       Schema::table('posts',function(Blueprint $table){
-        $table->dropForeign('author');
+        $table->dropForeign('user');
       });
     }
 }

@@ -9,10 +9,6 @@
         @csrf
         @method('PATCH')
         <div>
-          <label for="author">Autore</label>
-          <input type="text" name="author" readonly="readonly" value="{{$author->author_name}}">
-        </div>
-        <div>
           <label for="title">Titolo</label>
           <input type="text" name="title" value="{{$post->title}}">
         </div>

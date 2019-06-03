@@ -23,7 +23,7 @@
               </a>
             </td>
             <td>
-              {{$post->author->author_name}}
+              {{$post->user->name}}
             </td>
             <td>{{$post->title}}</td>
             <td>

@@ -13,8 +13,8 @@ class PostSeeder extends Seeder
     {
       factory(App\Post::class, 20)->make()
       ->each(function($post){
-        $author=App\Author::inRandomOrder()->first();
-        $post->author()->associate($author);
+        $author=App\User::inRandomOrder()->first();
+        $post->user()->associate($author);
         $post->save();
         $categories=App\Category::inRandomOrder()->take(5)->get();
         $post->categories()->attach($categories);
