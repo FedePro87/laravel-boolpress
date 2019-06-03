@@ -24,7 +24,6 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-          "author"=>"required",
           "title"=>"required",
           "content"=>"required",
           "categories"=>"required"
@@ -33,7 +32,6 @@ class PostRequest extends FormRequest
 
     public function messages() {
       return [
-        "author.required"=>"L'autore è necessario!",
         "title.required"=>"Il titolo è necessario!",
         "content.required"=>"Il testo è necessario!",
         "categories.required"=>"Aggiungere almeno una categoria!"

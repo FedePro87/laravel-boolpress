@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
 use App\Author;
+use App\User;
 use DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
@@ -44,14 +46,14 @@ class PostController extends Controller
     $validateData = $request->validated();
     $post=Post::make($validateData);
 
-    $inputAuthor=$request->input('author');
-    $author= Author::find($inputAuthor);
+    $inputAuthor= Auth::user()->name;
+    $author= User::where('name','=',$inputAuthor)->first();
     $post->author()->associate($author);
     $post->save();
 
     if ($request->input('categories')!==null) {
       $selectedCategories = $request->input('categories');
-      $categories = Category::find($selectedCategories);
+      $categories = Category::findOrFail($selectedCategories);
 
       foreach ($categories as $category) {
         $post->categories()->attach($category);
