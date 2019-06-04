@@ -7,7 +7,7 @@
   </tr>
   @foreach ($results as $result)
     <tr>
-      <td>{{$result->author->author_name}}</td>
+      <td>{{$result->user->name}}</td>
       <td>{{$result->title}}</td>
       <td>
         @foreach ($result->categories as $category)

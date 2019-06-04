@@ -11,16 +11,16 @@
 |
 */
 
-Route::get('/', 'PostController@index')->name('home');
+Route::get('/', 'PostController@index')->name('home')->middleware('verified');
 
-Route::get('/category/{category_name}', 'PostController@getPostByCategory')->name('getPostByCategory');
-Route::get('/post/{id}', 'PostController@show')->name('postShow');
-Route::get('/admin/post/new', 'PostController@create')->name('adminPostCreate');
-Route::get('/admin/post/edit/{id}', 'PostController@edit')->name('adminPostEdit');
-Route::get('/admin/post/delete/{id}', 'PostController@destroy')->name('adminPostDelete');
-Route::get('/search', 'PostController@showAdvancedSearchResults')->name('showAdvancedSearchResults');
-Route::resource('posts','PostController');
+Route::get('/category/{category_name}', 'PostController@getPostByCategory')->name('getPostByCategory')->middleware('verified');
+Route::get('/post/{id}', 'PostController@show')->name('postShow')->middleware('verified');
+Route::get('/admin/post/new', 'PostController@create')->name('adminPostCreate')->middleware('verified');
+Route::get('/admin/post/edit/{id}', 'PostController@edit')->name('adminPostEdit')->middleware('verified');
+Route::get('/admin/post/delete/{id}', 'PostController@destroy')->name('adminPostDelete')->middleware('verified');
+Route::get('/search', 'PostController@showAdvancedSearchResults')->name('showAdvancedSearchResults')->middleware('verified');
+Route::resource('posts','PostController')->middleware('verified');
 
-Route::post('/mail/send','HomeController@sendMail')->name('sendMail');
-Route::get('/mail','HomeController@showMailForm')->name('showMailForm');
-Auth::routes();
+Route::post('/mail/send','HomeController@sendMail')->name('sendMail')->middleware('verified');
+Route::get('/mail','HomeController@showMailForm')->name('showMailForm')->middleware('verified');
+Auth::routes(['verify' => true]);
