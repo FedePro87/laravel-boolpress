@@ -21,4 +21,6 @@ Route::get('/admin/post/delete/{id}', 'PostController@destroy')->name('adminPost
 Route::get('/search', 'PostController@showAdvancedSearchResults')->name('showAdvancedSearchResults');
 Route::resource('posts','PostController');
 
+Route::post('/mail/send','HomeController@sendMail')->name('sendMail');
+Route::get('/mail','HomeController@showMailForm')->name('showMailForm');
 Auth::routes();

@@ -51,5 +51,7 @@
     <a href="{{route('adminPostCreate')}}">Crea un nuovo post!</a><br>
     <a href="{{route('showAdvancedSearchResults')}}">Ricerca avanzata post</a>
     <div id="app"></div>
+
+    <a href="{{route('showMailForm')}}">Contattaci!</a>
   @endguest
 @stop

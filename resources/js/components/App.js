@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-import SearchBar from '../components/SearchBar';
+import Counter from '../components/Counter';
 
 export default class App extends Component {
-  handleTermChange(term) {
-    $("#myText").text(term);
-  }
   render() {
     return (
-      <div>
-        <SearchBar onTermChange={this.handleTermChange} />
-        <h1 id="myText"></h1>
+      <div className="App">
+        <Counter />
       </div>
     );
   }

@@ -61614,7 +61614,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return App; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _components_SearchBar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/SearchBar */ "./resources/js/components/SearchBar.js");
+/* harmony import */ var _components_Counter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Counter */ "./resources/js/components/Counter.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -61648,18 +61648,11 @@ function (_Component) {
   }
 
   _createClass(App, [{
-    key: "handleTermChange",
-    value: function handleTermChange(term) {
-      $("#myText").text(term);
-    }
-  }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_SearchBar__WEBPACK_IMPORTED_MODULE_1__["default"], {
-        onTermChange: this.handleTermChange
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-        id: "myText"
-      }));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "App"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Counter__WEBPACK_IMPORTED_MODULE_1__["default"], null));
     }
   }]);
 
@@ -61670,10 +61663,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/components/SearchBar.js":
-/*!**********************************************!*\
-  !*** ./resources/js/components/SearchBar.js ***!
-  \**********************************************/
+/***/ "./resources/js/components/Counter.js":
+/*!********************************************!*\
+  !*** ./resources/js/components/Counter.js ***!
+  \********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -61714,7 +61707,7 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(SearchBar).call(this));
     _this.state = {
-      term: ''
+      count: 0
     };
     return _this;
   }
@@ -61728,17 +61721,33 @@ function (_Component) {
       this.props.onTermChange(term);
     }
   }, {
+    key: "increaseValue",
+    value: function increaseValue() {
+      this.setState({
+        count: this.state.count + 1
+      });
+    }
+  }, {
+    key: "decreaseValue",
+    value: function decreaseValue() {
+      this.setState({
+        count: this.state.count - 1
+      });
+
+      if (this.state.count == -1) {
+        this.setState({
+          count: 0
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
-
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "search"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        onChange: function onChange(event) {
-          return _this2.onInputChange(event.target.value);
-        }
-      }));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: this.increaseValue.bind(this)
+      }, "+"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", null, this.state.count), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: this.decreaseValue.bind(this)
+      }, "-"));
     }
   }]);
 

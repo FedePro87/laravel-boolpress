@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
-use App\Author;
 use App\User;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -31,8 +30,7 @@ class PostController extends Controller
   public function create()
   {
     $categories=Category::all();
-    $authors=Author::all();
-    return view('layout.create-post',compact('categories','authors'));
+    return view('layout.create-post',compact('categories'));
   }
 
   /**
