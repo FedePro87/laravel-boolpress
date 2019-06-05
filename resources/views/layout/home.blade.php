@@ -5,7 +5,7 @@
     <h1>Devi essere loggato per vedere i post!!!</h1>
   @else
     <div class="read">
-      <table border="1">
+      {{-- <table border="1">
         <tr>
           <th>Post</th>
           <th>Autore</th>
@@ -46,7 +46,16 @@
             </td>
           </tr>
         @endforeach
-      </table>
+      </table> --}}
+      @include ('components.post-card')
+
+      <div class="container-fluid">
+        <div id="component-vue" class="row flex-wrap">
+          @foreach ($posts as $post)
+            <post-card data-id="{{$post->id}}" title="{{$post->title}}" content="{{$post->content}}" author="{{$post->user->name}}"></post-card>
+          @endforeach
+        </div>
+      </div>
     </div>
     <a href="{{route('adminPostCreate')}}">Crea un nuovo post!</a><br>
     <a href="{{route('showAdvancedSearchResults')}}">Ricerca avanzata post</a>

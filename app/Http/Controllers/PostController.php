@@ -18,7 +18,7 @@ class PostController extends Controller
   * @return \Illuminate\Http\Response
   */
   public function index(){
-    $posts=Post::offset(0)->limit(5)->latest()->get();
+    $posts=Post::offset(0)->limit(6)->latest()->get();
     return view('layout.home', compact('posts'));
   }
 
