@@ -207,4 +207,20 @@ class PostController extends Controller
 
   }
 
+  public function deleteFromAxios($id)
+  {
+    $post=Post::findOrFail($id);
+    DB::table('category_post')->where('post_id','=',$id)->delete();
+    $post->delete();
+
+    return response()->json('deleted!',200);
+  }
+
+  public function updateFromAxios(Request $request, $id)
+  {
+    $post=Post::findOrFail($id);
+    $post->update($request->all());
+    return response()->json($request->all(),200);
+  }
+
 }

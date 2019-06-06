@@ -17,6 +17,7 @@ class CreatePostsTable extends Migration
       $table->bigIncrements('id');
       $table->string('title');
       $table->text('content');
+      $table->bigInteger('likes');
       $table->bigInteger('user_id')->unsigned()->index();
       $table->timestamps();
     });

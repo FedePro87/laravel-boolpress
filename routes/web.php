@@ -24,3 +24,6 @@ Route::resource('posts','PostController')->middleware('verified');
 Route::post('/mail/send','HomeController@sendMail')->name('sendMail')->middleware('verified');
 Route::get('/mail','HomeController@showMailForm')->name('showMailForm')->middleware('verified');
 Auth::routes(['verify' => true]);
+
+Route::delete('/post/destroy/{id}',"PostController@deleteFromAxios")->middleware('verified');
+Route::post('/post/update/{id}',"PostController@updateFromAxios")->middleware('verified');

@@ -73963,22 +73963,87 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 
 
 function init() {
-  // render(<App />, document.getElementById('app'));
+  var token = $('meta[name="csrf-token"]').attr('content');
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token; // render(<App />, document.getElementById('app'));
+
   $('.alert').fadeOut(5000);
   Vue.component('post-card', {
     template: "#post-card",
     props: {
+      postId: String,
       title: String,
       content: String,
-      author: String
+      author: String,
+      likes: String
+    },
+    data: function data() {
+      return {
+        liked: false,
+        deleted: false,
+        editField: '',
+        postTitle: this.title,
+        postContent: this.content
+      };
+    },
+    computed: {
+      heartIcon: function heartIcon() {
+        return this.liked ? "fas" : "far";
+      },
+      postLike: function postLike() {
+        var tmpLikes = Number(this.likes) + (this.liked ? 1 : 0);
+        return tmpLikes;
+      }
+    },
+    methods: {
+      setLiked: function setLiked() {
+        this.liked = !this.liked;
+        console.log(this.liked);
+      },
+      focusField: function focusField(name) {
+        this.editField = name;
+      },
+      showField: function showField(name) {
+        return this.editField == name;
+      },
+      deletePost: function deletePost() {
+        axios["delete"]('/post/destroy/' + this.postId).then(function (response) {
+          console.log(response.data);
+        })["catch"](function (error) {
+          console.log(error.response.data);
+        });
+        this.deleted = true;
+      },
+      updatePost: function updatePost() {
+        var post = {
+          _token: token,
+          title: this.postTitle,
+          content: this.content,
+          author: this.author
+        };
+        axios.post('/post/update/' + this.postId, post).then(function (response) {
+          console.log(response.data);
+          console.log(response.status);
+        })["catch"](function (error) {
+          console.log(error.response.data);
+        });
+        this.editField = '';
+      },
+      reverseMessage: function reverseMessage() {
+        if (this.content[0] == "<") {
+          var splittedContent = this.content.split('<h1>');
+          var splittedContentClosure = splittedContent[1].split('</h1>');
+          this.content = splittedContentClosure[0].split('').reverse().join('');
+        } else {
+          this.content = this.content.split('').reverse().join('');
+        }
+      },
+      showPost: function showPost() {
+        window.location.href = "post/" + this.postId;
+      }
     }
   });
   new Vue({
     el: "#component-vue"
-  });
-  $(document).on('click', '.post-card', function () {
-    var id = $(this).data('id');
-    window.location.href = "/post/" + id;
   });
 }
 

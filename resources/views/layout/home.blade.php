@@ -52,7 +52,7 @@
       <div class="container-fluid">
         <div id="component-vue" class="row flex-wrap">
           @foreach ($posts as $post)
-            <post-card data-id="{{$post->id}}" title="{{$post->title}}" content="{{$post->content}}" author="{{$post->user->name}}"></post-card>
+            <post-card post-id="{{$post->id}}" title="{{$post->title}}" content="{{$post->content}}" author="{{$post->user->name}}" likes="{{$post->likes}}"></post-card>
           @endforeach
         </div>
       </div>

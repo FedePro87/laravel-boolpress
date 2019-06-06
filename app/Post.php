@@ -9,7 +9,8 @@ class Post extends Model
   protected $fillable=[
     'author_id',
     'title',
-    'content'
+    'content',
+    'likes'
   ];
 
   function categories(){
